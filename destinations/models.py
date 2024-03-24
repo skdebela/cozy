@@ -61,7 +61,7 @@ class Destination(AbstractItem):
     house_rules = models.ManyToManyField(HouseRule, related_name="destinations", blank=True)
 
     # fees in etb
-    daily_price = models.DecimalField(max_digits=10, decimal_places=2)
+    nightly_price = models.DecimalField(max_digits=10, decimal_places=2)
     weekly_discount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     monthly_discount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
@@ -75,11 +75,11 @@ class Destination(AbstractItem):
         total_price = 0
 
         if duration in range(7):
-            total_price += self.daily_price * duration
+            total_price += self.nightly_price * duration
         elif duration in range(7, 30):
-            total_price += ((self.daily_price * duration) - (self.weekly_discount * (duration / 7)))
+            total_price += ((self.nightly_price * duration) - (self.weekly_discount * (duration / 7)))
         elif duration >= 30:
-            total_price += ((self.daily_price * duration) - (self.monthly_discount * (duration / 30)))
+            total_price += ((self.nightly_price * duration) - (self.monthly_discount * (duration / 30)))
 
         total_price += self.cleaning_fee
 
