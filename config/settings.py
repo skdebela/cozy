@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
     'core',
     'destinations',
+    'cities',
 ]
 
 MIDDLEWARE = [
