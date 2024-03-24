@@ -18,11 +18,13 @@ class DestinationType(AbstractItem):
 
 
 class Amenity(AbstractItem):
-    pass
+    class Meta:
+        verbose_name_plural = "Amenities"
 
 
 class Facility(AbstractItem):
-    pass
+    class Meta:
+        verbose_name_plural = "Facilities"
 
 
 class HouseRule(AbstractItem):
@@ -34,7 +36,8 @@ class State(AbstractItem):
 
 
 class City(AbstractItem):
-    pass
+    class Meta:
+        verbose_name_plural = "Cities"
 
 
 class Destination(AbstractItem):
