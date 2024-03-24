@@ -1,0 +1,6 @@
+#mainu-collapse {
+    position: fixed;
+    top: 65px;
+    right: 15px;
+    z-index: 1000;
+}
