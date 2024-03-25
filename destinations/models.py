@@ -1,7 +1,6 @@
 from decimal import Decimal
 from django.db import models
 from core.models import AbstractTimeStamp
-from users.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -89,7 +88,7 @@ class Destination(AbstractItems):
     ]
 
     description = models.TextField()
-    host = models.ForeignKey(User, limit_choices_to={'is_host': True}, related_name="destinations",
+    host = models.ForeignKey(to='users.User', limit_choices_to={'is_host': True}, related_name="destinations",
                              on_delete=models.CASCADE)
     instant_book = models.BooleanField(default=True)
 
