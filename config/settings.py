@@ -87,6 +87,8 @@ DATABASES = {
     }
 }
 
+# Authentication model
+AUTH_USER_MODEL = 'users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -137,3 +139,6 @@ MEDIA_URL = "/media/"
 
 # Crispy forms tags
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
