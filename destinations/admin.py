@@ -1,7 +1,11 @@
 from django.contrib import admin
-from destinations.models import Destination, Photo
+from .models import Structure, Type, Amenity, StandoutAmenity, AccessibilityItem, SafetyConsideration, \
+    SafetyDevice, PropertyInformation, CheckoutInstruction, Photo, Destination
 
-admin.site.register(Destination)
+# Get all models from the destinations app
+models_to_register = [Structure, Type, Amenity, StandoutAmenity, AccessibilityItem, SafetyConsideration,
+                      SafetyDevice, PropertyInformation, CheckoutInstruction, Photo, Destination]
 
-admin.site.register(Photo)
-
+# Register each model dynamically
+for model in models_to_register:
+    admin.site.register(model)
