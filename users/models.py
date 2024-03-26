@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
-
+from core.models import AbstractTimeStamp
 
 class User(AbstractUser):
     """Custom User Model"""
@@ -29,3 +29,9 @@ class User(AbstractUser):
         return self.username
 
 
+class SavedDestination(AbstractTimeStamp):
+    user = models.ForeignKey(to='users.User', on_delete=models.CASCADE)
+    destination = models.ForeignKey(to='destinations.Destination', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.username} saved {self.destination}'

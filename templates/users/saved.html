@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Saved
+{% endblock %}
+
+{% block content %}
+    <div
+        class="row-cols-auto justify-content-center align-items-center g-2"
+    >
+        {% if saved_destinations %}
+            {% for destination in saved_destinations %}
+                <div class="col my-3">
+                    <a href="{% url 'details' destination.id destination.title|slugify %}" class="card-link"
+                       style="text-decoration: none; color: black;">
+                        <div class="card">
+                            <div id="destination-{{ destination.id }}-carouser-indicators" class="carousel slide"
+                                 data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button"
+                                            data-bs-target="#destination-{{ destination.id }}-carouser-indicators"
+                                            data-bs-slide-to="0"
+                                            class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button"
+                                            data-bs-target="#destination-{{ destination.id }}-carouser-indicators"
+                                            data-bs-slide-to="1"
+                                            aria-label="Slide 2"></button>
+                                    <button type="button"
+                                            data-bs-target="#destination-{{ destination.id }}-carouser-indicators"
+                                            data-bs-slide-to="2"
+                                            aria-label="Slide 3"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    {% for photo in destination.photos %}
+                                        <div class="carousel-item active">
+                                            <img src="{{ photo.url }}" class="d-block w-100" alt="...">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#destination-{{ destination.id }}-carouser-indicators"
+                                        data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                        data-bs-target="#destination-{{ destination.id }}-carouser-indicators"
+                                        data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ destination.name }}</h5>
+                                <div class="card-text">
+                                    <p>{{ destination.description }}</p>
+                                    <p>{{ destination.beds }} beds</p>
+                                    <p>ETB {{ destination.daily_price }} night</p>
+                                </div>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            No saved destinations, explore and save destinations to see them here.
+        {% endif %}
+    </div>
+
+{% endblock %}
