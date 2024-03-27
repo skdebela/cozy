@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from core.models import AbstractTimeStamp
 
+
 class User(AbstractUser):
     """Custom User Model"""
 
