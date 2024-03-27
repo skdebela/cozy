@@ -10,72 +10,69 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-4">
-            <div class="card text-center justify-content-center align-items-center">
-                {% if user.avatar %}
-                    <img class="card-img-top img-fluid rounded-circle"
-                         src="{{ user.avatar.url }}"
-                         alt="{{ user.username }}"
-                         style="height: 100px; width: auto"
-                    >
-                {% else %}
-                    <div class="rounded-circle d-flex justify-content-center align-items-center"
-                         style="height: 100px; width: 100px; background-color: lightgray; color: #333; font-size: 24px;">
-                        {{ user.username|slice:"1"|upper }}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-4">
+                <div class="card text-center justify-content-center align-items-center border-0">
+                    {% if user.avatar %}
+                        <img class="card-img-top img-fluid rounded-circle"
+                             src="{{ user.avatar.url }}"
+                             alt="{{ user.username }}"
+                             style="height: 100px; width: auto"
+                        >
+                    {% else %}
+                        <div class="rounded-circle d-flex justify-content-center align-items-center"
+                             style="height: 100px; width: 100px; background-color: lightgray; color: #333; font-size: 24px;">
+                            {{ user.username|slice:"1"|upper }}
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h4 class="card-title">{{ user.username }}</h4>
+                        <p class="card-text">
+                            {% if user.is_host %}
+                                Host
+                            {% else %}
+                                Guest
+                            {% endif %}
+                        </p>
                     </div>
-                {% endif %}
-                <div class="card-body">
-                    <h4 class="card-title">{{ user.username }}</h4>
-                    <p class="card-text">
-                        {% if user.is_host %}
-                            Host
-                        {% else %}
-                            Guest
-                        {% endif %}
-                    </p>
                 </div>
             </div>
+{#            <div class="col-8">#}
+{#                <div class="card">#}
+{#                    <div class="card-body">#}
+{#                        <h4 class="card-title">{{ user.username }}'s confirmed infromation</h4>#}
+{#                        <p class="card-text">Text</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
         </div>
-        <div class="col-8">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">{{ user.username }}'s confirmed infromation</h4>
-                    <p class="card-text">Text</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="container my-5">
-        <div class="row my-3">
-            <div class="col-3">
+        <div class="container my-5">
+            {% if user.is_host %}
                 <h2>{{ user.username }}'s listings</h2>
-                {% if user.is_host %}
-                    {% for destination in user_listings %}
-                        <div class="col my-3">
-                            <a href="{% url 'details' destination.id destination.title|slugify %}" class="card-link"
-                               style="text-decoration: none; color: black;">
-                                <div class="card">
-                                    <img
-                                        src="{{ photos.first_photo.url }}"
-                                        class="img-fluid card-img-top"
-                                        alt=""
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ destination.name }}</h5>
-                                        <div class="card-text">
-                                            <p>{{ destination.description }}</p>
-                                            <p>{{ destination.beds }} beds</p>
-                                            <p>ETB {{ destination.daily_price }} night</p>
-                                        </div>
-                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                <div class="row my-3">
+                {% for destination in user_listings %}
+                    <div class="col my-3">
+                        <a href="{% url 'details' destination.id destination.name|slugify %}" class="card-link"
+                           style="text-decoration: none; color: black;">
+                            <div class="card">
+                                <img
+                                    src="{{ photos.first_photo.url }}"
+                                    class="img-fluid card-img-top"
+                                    alt=""
+                                />
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ destination.name }}</h5>
+                                    <div class="card-text">
+                                        <p>{{ destination.beds }} beds</p>
+                                        <p>ETB {{ destination.nightly_price }} night</p>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                    {% endfor %}
-                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% endif %}
             </div>
         </div>
     </div>

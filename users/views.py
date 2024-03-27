@@ -15,8 +15,7 @@ class SignUpView(CreateView):
 
 @login_required
 def saved(request):
-    user = request.user
-    saved_destinations = SavedDestination.objects.filter(user=user)
+    saved_destinations = SavedDestination.objects.filter(user=request.user)
 
     return render(request, 'users/saved.html', {'saved_destinations': saved_destinations})
 
