@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Create a Destination | Cozy
+{% endblock %}
+
+{% block content %}
+    <div class="container text-center my-2">
+        <h3>Create a Destination</h3>
+    </div>
+
+    <div class="container">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <div class="text-end pt-2 pb-5">
+                <button type="submit" class="btn btn-success" name="save-and-add-another">Save and Add Another</button>
+                <button type="submit" class="btn btn-success" name="save">Save</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

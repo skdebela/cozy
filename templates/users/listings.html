@@ -9,10 +9,9 @@
         </div>
         <div class="col text-end">
             <a
-                name=""
                 id="create-listing"
                 class="btn btn-primary"
-                href="#"
+                href="{% url 'create_destination' %}"
                 role="button"
             ><i class="bi bi-plus-circle"></i></a
             >
@@ -23,7 +22,7 @@
     <div class="container row">
         {% for destination in listing_destinations %}
             <div class="col my-3">
-                <a href="{#{% url 'details' destination.id destination.title|slugify %}#}" class="card-link"
+                <a href="{% url 'details' destination.id destination.name|slugify %}" class="card-link"
                    style="text-decoration: none; color: black;">
                     <div class="card">
                         <img

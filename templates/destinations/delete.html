@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block title %}
+    Delete Destination
+{% endblock %}
+
+{% block content %}
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:">
+            <use xlink:href="#exclamation-triangle-fill"></use>
+        </svg>
+        <div>
+            <p class="m-0">Are you sure you want to delete the destination "{{ destination.name }}"?</p>
+        </div>
+        <form class="ms-auto" method="post">
+            {% csrf_token %}
+            <a href="{% url 'listings' %}" class="btn btn-success">Cancel</a>
+            <button type="submit" class="btn btn-danger ms-2">Delete</button>
+        </form>
+    </div>
+
+
+    {% for photo in photos %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <img
+                        src="{{ first_photo.url }}"
+                        class="img-fluid rounded-top"
+                        alt=""
+                    />
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    {% for photo in next_four_photos %}
+                        <div class="col-md-6 col-sm-12">
+                            <img
+                                src="{{ photo.url }}"
+                                class="img-fluid rounded-top"
+                                alt=""
+                            />
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    {% endfor %}
+    <h5>{{ destination.destination_type }} in {{ destination.city }}, {{ destination.state }} </h5>
+    <h5 id="title">{{ destination.name }}</h5>
+    <p id="facilities">
+        <span id="guest-capacity">{{ destination.guest_capacity }} guests .</span>
+        <span id="bedrooms">{{ destination.bedrooms }} bedrooms.</span>
+        <span id="beds">{{ destination.beds }} beds.</span>
+        <span id="baths">{{ destination.baths }} baths.</span>
+    </p>
+
+    <div class="container">
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <a href="">
+                        <img
+                            src="{{ host.avatar }}"
+                            class="img-fluid rounded-circle"
+                            alt="{{ host.name }}"
+                        />
+                    </a>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h3 class="card-title">Hosted by {{ host.name }}</h3>
+                        <p class="card-text">
+                            This is a wider card with supporting text below as a
+                            natural lead-in to additional content. This content is a
+                            little bit longer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        {% if destination.instant_book == True %}
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <a href="">
+                            <img
+                                src="{% static 'instant_book.png' %}"
+                                class="img-fluid rounded-circle"
+                                alt=""
+                            />
+                        </a>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h6 class="card-title">Instant Booking</h6>
+                            <p class="card-text">
+                                Book with just a click, doesn't need approval.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <hr>
+
+        <div
+            class="container"
+        >
+            <h3>What this place offers</h3>
+            <ul class="list-group list-group-flush">
+                {% for amenity in destination.amenities %}
+                    <li class="list-group-item">{{ amenity }}</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+        <hr>
+        <div
+            class="container" id="house-rules"
+        >
+            <h3>Things to know</h3>
+            <ul class="list-group list-group-flush">
+                {% for rule in destination.house_rules %}
+                    <li class="list-group-item">{{ rule }}</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+    </div>
+
+{% endblock %}

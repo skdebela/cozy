@@ -95,9 +95,9 @@ class Destination(AbstractItems):
     # property
     structure = models.ForeignKey(to='destinations.Structure', on_delete=models.CASCADE)
     type = models.ForeignKey(to='destinations.Type', on_delete=models.CASCADE)
-    amenities = models.ManyToManyField(to='destinations.Amenity')
-    standout_amenities = models.ManyToManyField(to='destinations.StandoutAmenity')
-    accessibility_items = models.ManyToManyField(to='destinations.AccessibilityItem')
+    amenities = models.ManyToManyField(to='destinations.Amenity', null=True, blank=True)
+    standout_amenities = models.ManyToManyField(to='destinations.StandoutAmenity', null=True, blank=True)
+    accessibility_items = models.ManyToManyField(to='destinations.AccessibilityItem', null=True, blank=True)
     wifi_network_name = models.CharField(max_length=100, blank=True, null=True)
     wifi_password = models.CharField(max_length=100, blank=True, null=True)
     house_manual = models.TextField(blank=True, null=True)
@@ -113,9 +113,9 @@ class Destination(AbstractItems):
     events_allowed = models.BooleanField(default=False)
     smoking_allowed = models.BooleanField(default=False)
     commercial_photography_allowed = models.BooleanField(default=False)
-    check_in_start_time = models.TimeField()
-    check_in_end_time = models.TimeField()
-    check_out_time = models.TimeField()
+    check_in_start_time = models.TimeField(null=True, blank=True)
+    check_in_end_time = models.TimeField(null=True, blank=True)
+    check_out_time = models.TimeField(null=True, blank=True)
     additional_rules = models.TextField(blank=True, null=True)
 
     # fees in etb
@@ -137,9 +137,9 @@ class Destination(AbstractItems):
     directions = models.TextField(null=True, blank=True)
 
     # safety
-    safety_considerations = models.ManyToManyField(to='destinations.SafetyConsideration')
-    safety_devices = models.ManyToManyField(to='destinations.SafetyDevice')
-    property_information = models.ManyToManyField(to='destinations.PropertyInformation')
+    safety_considerations = models.ManyToManyField(to='destinations.SafetyConsideration', null=True, blank=True)
+    safety_devices = models.ManyToManyField(to='destinations.SafetyDevice', null=True, blank=True)
+    property_information = models.ManyToManyField(to='destinations.PropertyInformation', null=True, blank=True)
 
     # Check-in method
     check_in_method = models.CharField(max_length=50, choices=CHECK_IN_METHOD_CHOICES, default='in_person_greeting',
@@ -147,7 +147,7 @@ class Destination(AbstractItems):
     other_check_in_method = models.TextField(null=True, blank=True)
 
     # checkouts
-    checkout_instructions = models.ManyToManyField(to='destinations.CheckoutInstruction')
+    checkout_instructions = models.ManyToManyField(to='destinations.CheckoutInstruction', null=True, blank=True)
     additional_checkout_instructions = models.TextField(blank=True, null=True)
 
     # Cancellation policy
