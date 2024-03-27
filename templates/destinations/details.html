@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Cozy
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        {% if user == destination.host %}
+            <div class="text-end">
+                <a href="{% url 'update_destination' destination.id destination.name|slugify %}">
+                    <button type="button"
+                            class="btn bg-primary-subtle border border-primary rounded-3 text-end fw-bold">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+        {% for photo in photos %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <img
+                            src="{{ first_photo.url }}"
+                            class="img-fluid rounded-top"
+                            alt=""
+                        />
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        {% for photo in next_four_photos %}
+                            <div class="col-md-6 col-sm-12">
+                                <img
+                                    src="{{ photo.url }}"
+                                    class="img-fluid rounded-top"
+                                    alt=""
+                                />
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+        <h5>{{ destination.destination_type }} in {{ destination.city }}, {{ destination.state }} </h5>
+        <h5 id="title">{{ destination.name }}</h5>
+        <p id="facilities">
+            <span id="guest-capacity">{{ destination.guest_capacity }} guests .</span>
+            <span id="bedrooms">{{ destination.bedrooms }} bedrooms.</span>
+            <span id="beds">{{ destination.beds }} beds.</span>
+            <span id="baths">{{ destination.baths }} baths.</span>
+        </p>
+
+        <div class="container">
+            <div class="card mb-3 border-0" style="max-width: 540px;">
+                <div class="row g-0 align-items-center">
+                    <div class="col-md-4">
+                        <a class="nav-link" href="{% url 'profile' destination.host.username %}">
+                            {% if user.avatar %}
+                                <img class="card-img-top img-fluid rounded-circle"
+                                     src="{{ user.avatar.url }}"
+                                     alt="{{ user.username }}"
+                                     style="height: 100px; width: auto"
+                                >
+                            {% else %}
+                                <div class="rounded-circle d-flex justify-content-center align-items-center"
+                                     style="height: 100px; width: 100px; background-color: lightgray; color: #333; font-size: 24px;">
+                                    {{ user.username|slice:"1"|upper }}
+                                </div>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h3 class="card-title">Hosted by {{ destination.host.username }}</h3>
+                            <p class="card-text">
+                                This is a wider card with supporting text below as a
+                                natural lead-in to additional content. This content is a
+                                little bit longer.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            {% if destination.instant_book == True %}
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+
+                            Instant Book
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h6 class="card-title">Instant Booking</h6>
+                                <p class="card-text">
+                                    Book with just a click, doesn't need approval.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <hr>
+
+            <div
+                class="container"
+            >
+                <h3>What this place offers</h3>
+                <ul class="list-group list-group-flush">
+                    {% for amenity in destination.amenities.all %}
+                        <li class="list-group-item">{{ amenity }}</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+            <hr>
+            <div
+                class="container" id="house-rules"
+            >
+                <h3>Things to know</h3>
+                <ul class="list-group list-group-flush">
+                    {% for rule in destination.house_rules %}
+                        <li class="list-group-item">{{ rule }}</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    {#    prev #}
+    {#    <div#}
+    {#        class="row-cols-auto justify-content-center align-items-center g-2"#}
+    {#    >#}
+    {#        <div class="col card">#}
+    {#            <div id="destination-{{ destination.id }}-carouser-indicators" class="carousel slide"#}
+    {#                 data-bs-ride="carousel">#}
+    {#                <div class="carousel-indicators">#}
+    {#                    <button type="button" data-bs-target="#destination-{{ destination.id }}-carouser-indicators"#}
+    {#                            data-bs-slide-to="0"#}
+    {#                            class="active" aria-current="true" aria-label="Slide 1"></button>#}
+    {#                    <button type="button" data-bs-target="#destination-{{ destination.id }}-carouser-indicators"#}
+    {#                            data-bs-slide-to="1"#}
+    {#                            aria-label="Slide 2"></button>#}
+    {#                    <button type="button" data-bs-target="#destination-{{ destination.id }}-carouser-indicators"#}
+    {#                            data-bs-slide-to="2"#}
+    {#                            aria-label="Slide 3"></button>#}
+    {#                </div>#}
+    {#                <div class="carousel-inner">#}
+    {#                    {% for photo in destination.photos %}#}
+    {#                        <div class="carousel-item active">#}
+    {#                            <img src="{{ photo.url }}" class="d-block w-100" alt="...">#}
+    {#                        </div>#}
+    {#                    {% endfor %}#}
+    {#                </div>#}
+    {#                <button class="carousel-control-prev" type="button"#}
+    {#                        data-bs-target="#destination-{{ destination.id }}-carouser-indicators"#}
+    {#                        data-bs-slide="prev">#}
+    {#                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>#}
+    {#                    <span class="visually-hidden">Previous</span>#}
+    {#                </button>#}
+    {#                <button class="carousel-control-next" type="button"#}
+    {#                        data-bs-target="#destination-{{ destination.id }}-carouser-indicators"#}
+    {#                        data-bs-slide="next">#}
+    {#                    <span class="carousel-control-next-icon" aria-hidden="true"></span>#}
+    {#                    <span class="visually-hidden">Next</span>#}
+    {#                </button>#}
+    {#            </div>#}
+    {#            <div class="card-body">#}
+    {#                <h5 class="card-title">{{ destination.name }}</h5>#}
+    {#                <div class="card-text">#}
+    {#                    <p>{{ destination.description }}</p>#}
+    {#                    <p>{{ destination.beds }} beds</p>#}
+    {#                    <p>ETB {{ destination.daily_price }} night</p>#}
+    {#                </div>#}
+    {#                <a href="#" class="btn btn-primary">Go somewhere</a>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+{% endblock %}
