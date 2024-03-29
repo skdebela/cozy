@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Booking{% endblock %}
+
+{% block content %}
+    <div class="container pt-2">
+        {% if destination.instant_book %}
+            <h4>Book</h4>
+        {% else %}
+            <h4>Request to book</h4>
+        {% endif %}
+        <div class="row m-0">
+            <div class="col-lg-7 pb-5 pe-lg-5 mt-4">
+                {% include 'partials/destination-card-minimal.html' %}
+                
+            </div>
+            <div class="col-lg-5 p-0 ps-lg-4">
+                <div class="px-4">
+                    <div class="d-flex align-items-end mt-4 mb-2">
+                        <h6 class="h4 mx-0 m3-2">{{ destination.name }}</h6>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <p class="text-muted"></p>
+                        <p class="fs-14">
+                            {% if booking %}
+                                ETB {{ destination.nightly_price }} x {{ booking.nights }} Nights
+                            {% else %}
+                                ETB {{ destination.nightly_price }} per night
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <p class="text-muted">Subtotal</p>
+                        <p class="fs-14">
+                            {% if booking %}
+                                ETB {{ booking.sub_total }}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <p class="text-muted">Discount</p>
+                        <p class="fs-14">
+                            {% if discount %}
+                                ETB {{ discount }}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <p class="text-muted fw-bold">Total</p>
+                        <div class="fs-14 fw-bold ">
+                            {% if booking %}
+                                ETB {{ booking.total_price }}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 px-0">
+                    <div class="bg-light py-2">
+                        <div class="px-4 mt-4">
+                            <p class="fw-bold">Payment detail</p>
+                        </div>
+                        <div class="px-4">
+                            <div class="mb-3">
+                                <label for="card-number" class="form-label">Card Number</label>
+                                <input type="number" class="form-control" id="card-number"
+                                       placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div class="mb-3">
+                                <label for="expiry-month" class="form-label">Expires</label>
+                                <input type="" class="form-control" id="expiry-month" placeholder="MM/YYYY">
+                            </div>
+                            <div class="mb-3">
+                                <label for="card-holder" class="form-label">Cardholder name</label>
+                                <input type="text" class="form-control" id="card-holder" placeholder="John Doe">
+                            </div>
+                            <div class="mb-3">
+                                <label for="cvc" class="form-label">CVC</label>
+                                <input type="number" class="form-control" id="cvc" placeholder="XXX">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 mb-5 mt-1">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-primary" type="submit" name="book">
+                                {% if destination.instant_book %}
+                                    Book
+                                {% else %}
+                                    Request to book
+                                {% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
