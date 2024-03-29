@@ -1,0 +1,55 @@
+{% extends 'hosting-base.html' %}
+
+{% block title %}Hosting{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        {% if currently_hosting %}
+            <div class="row my-2">
+                <h2>Currently hosting</h2>
+                {% for booking in currently_hosting %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {% include 'partials/booking-card.html' %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if pending_bookings %}
+            <div class="row my-2">
+                <h2>Pending</h2>
+                {% for booking in pending_bookings %}
+                    <div class="col-md-6">
+                        {% include 'partials/booking-card.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if upcoming_bookings %}
+            <div class="row my-2">
+                <h2>Upcoming</h2>
+                {% for booking in upcoming_bookings %}
+                    <div class="col-md-6">
+                        {% include 'partials/booking-card.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if past_bookings %}
+            <div class="row my-2">
+                <h2>Past Bookings</h2>
+                {% for booking in past_bookings %}
+                    <div class="col-md-6">
+                        {% include 'partials/booking-card.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+
+{% endblock %}
