@@ -1,0 +1,30 @@
+{% load static %}
+<div class="card">
+    <div class="card-body row">
+        <div class="card-text col-6">
+            <p>Guest: {{ booking.guest.username }}</p>
+            <p>Stay: {{ booking.check_in }} - {{ booking.check_out }}</p>
+            <p>Pay: {{ booking.destination.nightly_price }} * {{ booking.nights }} nights</p>
+            <p>Earning before commission: ETB {{ booking.total_price }}</p>
+            <p>Earning after commission: ETB {{ booking.earning_after_commission }}</p>
+        </div>
+        <div class="col-6">
+            <h5 class="card-title">{{ booking.destination.city }}, {{ booking.destination.state }}</h5>
+            <div class="card-text row">
+                <div class="col-10">
+                    <p>{{ booking.destination.name | truncatewords:5 }}</p>
+                    <p>{{ booking.destination.beds }} beds</p>
+                    <p>ETB {{ booking.destination.nightly_price }} per night</p>
+                </div>
+                {% if booking.status == 'Pending' %}
+                    <div class="col-2">
+                        <form method="POST" action="{% url 'approve_booking' booking.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Approve</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
