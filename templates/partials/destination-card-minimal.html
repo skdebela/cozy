@@ -1,0 +1,15 @@
+{% load static %}
+<div class="card">
+    <img
+        src="{{ destination.first_photo.file.url }}"
+        class="img-fluid card-img-top"
+        style="height: 300px; object-fit: cover;"
+        alt=""
+    />
+    <div class="card-body">
+        <h5 class="card-title">{{ destination.name | truncatewords:4 }}</h5>
+        <div class="card-text">
+            <p>{{ destination.city }}, {{ destination.state }}</p>
+        </div>
+    </div>
+</div>
