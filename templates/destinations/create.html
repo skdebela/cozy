@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Create a Destination | Cozy
+    Create Destination
 {% endblock %}
 
 {% block content %}
@@ -12,10 +12,13 @@
     </div>
 
     <div class="container">
-        <form method="POST" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form|crispy }}
-
+            {{ destination_form|crispy }}
+            {{ photo_formset.management_form }}
+            {% for form in photo_formset %}
+                {{ form|crispy }}
+            {% endfor %}
             <div class="text-end pt-2 pb-5">
                 <button type="submit" class="btn btn-success" name="save-and-add-another">Save and Add Another</button>
                 <button type="submit" class="btn btn-success" name="save">Save</button>

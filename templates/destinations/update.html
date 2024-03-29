@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Create a Destination | Cozy
+    Update - {{ destination.name }}
 {% endblock %}
 
 {% block content %}
@@ -12,9 +12,20 @@
     </div>
 
     <div class="container">
-        <form method="POST" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form|crispy }}
+            {{ destination_form|crispy }}
+
+            <!-- Render existing photos -->
+            {% for photo in existing_photos %}
+                <img src="{{ photo.file.url }}" alt="{{ photo.caption }}">
+            {% endfor %}
+
+            <!-- Include the photo formset -->
+            {{ photo_formset.management_form }}
+            {% for form in photo_formset %}
+                {{ form|crispy }}
+            {% endfor %}
 
             <div class="text-end pt-2 pb-5">
                 <a class="btn btn-danger" href="{% url 'delete_destination' destination.id destination.name|slugify %}"
@@ -22,6 +33,7 @@
                 <button type="submit" class="btn btn-success" name="save">Save Changes</button>
             </div>
         </form>
+
     </div>
 
 {% endblock %}
