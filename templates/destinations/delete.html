@@ -105,7 +105,7 @@
         >
             <h3>What this place offers</h3>
             <ul class="list-group list-group-flush">
-                {% for amenity in destination.amenities %}
+                {% for amenity in destination.amenities.all %}
                     <li class="list-group-item">{{ amenity }}</li>
                 {% endfor %}
             </ul>
