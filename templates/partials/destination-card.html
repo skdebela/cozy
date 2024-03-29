@@ -1,0 +1,80 @@
+{% load static %}
+<div class="card border-0" style="width: 18rem; height: 20rem;">
+    <div id="destination-{{ destination.id }}-carouser-indicators" class="carousel slide">
+        <div class="carousel-indicators">
+            <button type="button"
+                    data-bs-target="#destination-{{ destination.id }}-carouser-indicators"
+                    data-bs-slide-to="0"
+                    class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button"
+                    data-bs-target="#destination-{{ destination.id }}-carouser-indicators"
+                    data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+            <button type="button"
+                    data-bs-target="#destination-{{ destination.id }}-carouser-indicators"
+                    data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img
+                    src="{{ destination.first_photo.file.url }}"
+                    class="img-fluid card-img-top rounded"
+                    style="height: 300px; object-fit: cover;"
+                    alt="..."
+                >
+            </div>
+            {% for photo in destination.next_four_photos.all %}
+                <div class="carousel-item">
+                    <img
+                        src="{{ photo.file.url }}"
+                        class="img-fluid card-img-top rounded"
+                        style="height: 300px; object-fit: cover;"
+                        alt="..."
+                    >
+                </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button"
+                data-bs-target="#destination-{{ destination.id }}-carouser-indicators"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button"
+                data-bs-target="#destination-{{ destination.id }}-carouser-indicators"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <div class="card-body">
+        <div class="card-text">
+            <p>{{ destination.name | truncatewords:5 }}</p>
+            <div class="row">
+                <div class="col-9">
+                    <p class="fw-semibold">{{ destination.street_address }}, {{ destination.city }}</p>
+                    <p class="lh-sm">ETB {{ destination.nightly_price }} night</p>
+                </div>
+                {% if user.is_authenticated %}
+                    <div class="col-3">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="destination_id" value="{{ destination.id }}" formnovalidate>
+                            {% if destination.is_saved_by_user %}
+                                <button class="btn save-button" type="submit" name="delete"
+                                        value="{{ destination.id }}">
+                                    <i class="bi bi-bookmark-fill"></i>
+                                </button>
+                            {% else %}
+                                <button class="btn save-button" type="submit" name="save" value="{{ destination.id }}">
+                                    <i class="bi bi-bookmark"></i>
+                                </button>
+                            {% endif %}
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

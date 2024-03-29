@@ -1,46 +1,35 @@
-{% extends 'base.html' %}
+{% extends 'hosting-base.html' %}
 
-{% block title %}Listings | Cozy{% endblock %}
+{% block title %}Listings{% endblock %}
 
 {% block content %}
-    <div class="container row">
+    <div class="container-fluid row my-2">
         <div class="col">
             <h2>Your Listings</h2>
         </div>
         <div class="col text-end">
             <a
                 id="create-listing"
-                class="btn btn-primary"
+                class="btn"
                 href="{% url 'create_destination' %}"
                 role="button"
-            ><i class="bi bi-plus-circle"></i></a
+            ><i class="bi bi-plus-circle text-primary"></i></a
             >
 
         </div>
 
     </div>
-    <div class="container row">
-        {% for destination in listing_destinations %}
-            <div class="col my-3">
-                <a href="{% url 'details' destination.id destination.name|slugify %}" class="card-link"
-                   style="text-decoration: none; color: black;">
-                    <div class="card">
-                        <img
-                            src="{{ destination.photos.first_photo.url }}"
-                            class="img-fluid card-img-top"
-                            alt=""
-                        />
-                        <div class="card-body">
-                            <h5 class="card-title">{{ destination.name }}</h5>
-                            <div class="card-text">
-                                <p>{{ destination.city }}, {{ destination.state }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-
+    <div class="container-fluid">
+        <div class="row">
+            {% for destination in listing_destinations %}
+                <div class="col-md-4 my-3">
+                    <a href="{% url 'details' destination.id destination.name|slugify %}" class="card-link"
+                       style="text-decoration: none; color: black;">
+                        {% include 'partials/destination-card-minimal.html' %}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
 {% endblock %}

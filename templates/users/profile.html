@@ -6,7 +6,7 @@
     {% else %}
         Guest
     {% endif %}
-    Profile | Cozy
+    Profile
 {% endblock %}
 
 {% block content %}
@@ -47,7 +47,7 @@
 {#                </div>#}
 {#            </div>#}
         </div>
-        <div class="container my-5">
+        <div class="my-5">
             {% if user.is_host %}
                 <h2>{{ user.username }}'s listings</h2>
                 <div class="row my-3">
@@ -55,20 +55,7 @@
                     <div class="col my-3">
                         <a href="{% url 'details' destination.id destination.name|slugify %}" class="card-link"
                            style="text-decoration: none; color: black;">
-                            <div class="card">
-                                <img
-                                    src="{{ photos.first_photo.url }}"
-                                    class="img-fluid card-img-top"
-                                    alt=""
-                                />
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ destination.name }}</h5>
-                                    <div class="card-text">
-                                        <p>{{ destination.beds }} beds</p>
-                                        <p>ETB {{ destination.nightly_price }} night</p>
-                                    </div>
-                                </div>
-                            </div>
+                            {% include 'partials/destination-card.html' %}
                         </a>
                     </div>
                 {% endfor %}
