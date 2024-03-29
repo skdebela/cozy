@@ -6,5 +6,6 @@ urlpatterns = [
     path('accounts/signup', users_views.SignUpView.as_view(), name='signup'),
     path('saved', users_views.saved, name='saved'),
     path('users/<str:username>', users_views.profile, name='profile'),
+    path('hosting/', users_views.host, name='hosting'),
     path('hosting/listings', users_views.listings, name='listings'),
 ]
