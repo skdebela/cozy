@@ -1,136 +1,186 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% load crispy_forms_tags %}
+
 {% block title %}
-    Cozy
+    {{ destination.name }}
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
-        {% if user == destination.host %}
-            <div class="text-end">
-                <a href="{% url 'update_destination' destination.id destination.name|slugify %}">
-                    <button type="button"
-                            class="btn bg-primary-subtle border border-primary rounded-3 text-end fw-bold">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                </a>
-            </div>
-        {% endif %}
-        {% for photo in photos %}
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                        <img
-                            src="{{ first_photo.url }}"
-                            class="img-fluid rounded-top"
-                            alt=""
-                        />
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        {% for photo in next_four_photos %}
-                            <div class="col-md-6 col-sm-12">
-                                <img
-                                    src="{{ photo.url }}"
-                                    class="img-fluid rounded-top"
-                                    alt=""
-                                />
-                            </div>
-                        {% endfor %}
-                    </div>
+    {% include 'partials/search-bar.html' %}
 
-                </div>
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-10">
+                <h3 id="title">{{ destination.name }}</h3>
             </div>
-        {% endfor %}
-        <h5>{{ destination.destination_type }} in {{ destination.city }}, {{ destination.state }} </h5>
-        <h5 id="title">{{ destination.name }}</h5>
-        <p id="facilities">
-            <span id="guest-capacity">{{ destination.guest_capacity }} guests .</span>
-            <span id="bedrooms">{{ destination.bedrooms }} bedrooms.</span>
-            <span id="beds">{{ destination.beds }} beds.</span>
-            <span id="baths">{{ destination.baths }} baths.</span>
-        </p>
-
-        <div class="container">
-            <div class="card mb-3 border-0" style="max-width: 540px;">
-                <div class="row g-0 align-items-center">
-                    <div class="col-md-4">
-                        <a class="nav-link" href="{% url 'profile' destination.host.username %}">
-                            {% if user.avatar %}
-                                <img class="card-img-top img-fluid rounded-circle"
-                                     src="{{ user.avatar.url }}"
-                                     alt="{{ user.username }}"
-                                     style="height: 100px; width: auto"
-                                >
-                            {% else %}
-                                <div class="rounded-circle d-flex justify-content-center align-items-center"
-                                     style="height: 100px; width: 100px; background-color: lightgray; color: #333; font-size: 24px;">
-                                    {{ user.username|slice:"1"|upper }}
-                                </div>
-                            {% endif %}
-                        </a>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h3 class="card-title">Hosted by {{ destination.host.username }}</h3>
-                            <p class="card-text">
-                                This is a wider card with supporting text below as a
-                                natural lead-in to additional content. This content is a
-                                little bit longer.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            {% if destination.instant_book == True %}
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-
-                            Instant Book
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h6 class="card-title">Instant Booking</h6>
-                                <p class="card-text">
-                                    Book with just a click, doesn't need approval.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+            {% if user == destination.host %}
+                <div class="text-end col-2">
+                    <a href="{% url 'update_destination' destination.id destination.name|slugify %}">
+                        <button type="button"
+                                class="btn bg-primary-subtle border border-primary rounded-3 text-end fw-bold">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    </a>
                 </div>
             {% endif %}
-
-            <hr>
-
-            <div
-                class="container"
-            >
-                <h3>What this place offers</h3>
-                <ul class="list-group list-group-flush">
-                    {% for amenity in destination.amenities.all %}
-                        <li class="list-group-item">{{ amenity }}</li>
-                    {% endfor %}
-                </ul>
-
-            </div>
-            <hr>
-            <div
-                class="container" id="house-rules"
-            >
-                <h3>Things to know</h3>
-                <ul class="list-group list-group-flush">
-                    {% for rule in destination.house_rules %}
-                        <li class="list-group-item">{{ rule }}</li>
-                    {% endfor %}
-                </ul>
-
-            </div>
-
         </div>
+
+        <div class="mb-5">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <img
+                        src="{{ destination.first_photo.file.url }}"
+                        class="img-fluid rounded"
+                        alt=""
+                    />
+                </div>
+                <div class="col-md-6 col-sm-12 row">
+                    {% for photo in destination.next_four_photos %}
+                        <div class="col-md-6 col-sm-12">
+                            <img
+                                src="{{ photo.file.url }}"
+                                class="img-fluid rounded"
+                                alt=""
+                            />
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container">
+            <h5>{{ destination.type }} in {{ destination.city }}</h5>
+            <p id="facilities">
+                <span id="guest-capacity">{{ destination.guests }} guests</span>
+                <i class="bi bi-dot"></i>
+                <span id="bedrooms">{{ destination.bedrooms }} bedrooms</span>
+                <i class="bi bi-dot"></i>
+                <span id="beds">{{ destination.beds }} beds</span>
+                <i class="bi bi-dot"></i>
+                <span id="baths">{{ destination.bathrooms }} baths</span>
+            </p>
+            <hr>
+
+            <div class="my-3">
+                <div class="card border-0" style="max-width: 540px;">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-2 text-center">
+                            <a class="nav-link" href="{% url 'profile' destination.host.username %}">
+                                {% if user.avatar %}
+                                    <img class="card-img-top img-fluid rounded-circle"
+                                         src="{{ user.avatar.url }}"
+                                         alt="{{ user.username }}"
+                                         style="height: 60px; width: auto"
+                                    >
+                                {% else %}
+                                    <div class="rounded-circle d-flex justify-content-center align-items-center"
+                                         style="height: 60px; width: 60px; background-color: lightgray; color: #333; font-size: 24px;">
+                                        {{ user.username|slice:"1"|upper }}
+                                    </div>
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="card-body">
+                                <h5 class="card-title">Hosted by {{ destination.host.username }}</h5>
+                                <p class="card-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+            {% if destination.instant_book %}
+                <div class="my-3">
+                    <div class="card border-0" style="max-width: 540px;">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-md-2 text-center">
+                                <i class="bi bi-lightning-charge"></i>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    <h6 class="card-title">Instant Booking</h6>
+                                    <p class="card-text">
+                                        Book with just a click, doesn't need approval.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            {% endif %}
+
+            {# Details #}
+            <div class="row">
+                <h3>About this place</h3>
+                <div class="col-md-8">
+                    <p id="destination-description">
+                        {{ destination.description | truncatewords:100 }}
+                        {% if destination.description|wordcount > 100 %}
+                            <span id="more-plot" style="display: none;">{{ destination.description }}</span>
+                            <a class="link-dark link-offset-2" href="#" id="show-more">Read More</a>
+                            <a class="link-dark link-offset-2" href="#" id="show-less" style="display: none;">Read
+                                Less</a>
+                        {% endif %}
+                    </p>
+
+                    <div class="my-4" id="amenities">
+                        <h5>What this place offers</h5>
+                        <ul class="list-group list-group-flush">
+                            {% for amenity in destination.amenities.all %}
+                                <li class="list-group-item">{{ amenity }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="my-5" id="house-rules">
+                        <h5>Things to know</h5>
+                        <ul class="list-group list-group-flush">
+                            {% for rule in destination.house_rules %}
+                                <li class="list-group-item">{{ rule }}</li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="col-md-4 sticky-top">
+                    <div class="card text-center border-0 shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">Book {{ destination.name }}</h5>
+                            <p class="card-text">ETB {{ destination.nightly_price }} / night</p>
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                <div class="row g-3">
+                                    <div class="col">
+                                        {{ booking_form.check_in|as_crispy_field }}
+                                    </div>
+                                    <div class="col">
+                                        {{ booking_form.check_out|as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div class="row col-12 text-end mt-2">
+                                    <div class="d-grid gap-2 mb-5 mt-1">
+                                        <button type="submit" class="btn btn-secondary" name="get-price">Get Price
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-
+    <script src="{% static 'js/script.js' %}"></script>
 
     {#    prev #}
     {#    <div#}
