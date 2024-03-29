@@ -64,7 +64,7 @@ class CheckoutInstruction(AbstractItems):
 
 
 class Photo(AbstractTimeStamp):
-    caption = models.CharField(max_length=100)
+    caption = models.CharField(max_length=100, null=True, blank=True)
     file = models.ImageField(upload_to='')
     destination = models.ForeignKey(to='destinations.Destination', on_delete=models.CASCADE, related_name='photos')
 
@@ -156,35 +156,6 @@ class Destination(AbstractItems):
 
     def __str__(self):
         return self.name
-
-    def get_total_cost(self, nights=1):
-        """
-        Calculate the total price based on duration of stay.
-        """
-
-        total_price = 0
-
-        # Apply nightly price
-        total_price += self.nightly_price * nights
-
-        # Apply new listing promotion discount for first 3 bookings
-        if self.new_listing_promotion:  # and is first 3 booking
-            # total_price *= 0.8  # 20% discount
-            pass
-
-        # Apply weekly discount
-        if nights in range(7, 28) and self.weekly_discount_percentage is not None:
-            total_price *= (1 - Decimal(self.weekly_discount_percentage / 100))
-
-        # Apply monthly discount
-        if nights >= 28 and self.monthly_discount_percentage is not None:
-            total_price *= (1 - Decimal(self.monthly_discount_percentage / 100))
-
-        # Add cleaning fee
-        if self.cleaning_fee:
-            total_price += self.cleaning_fee
-
-        return total_price
 
     @property
     def first_photo(self):
