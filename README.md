@@ -30,21 +30,29 @@ This project allows users to view, search, and book accommodations (destinations
 
 1. Clone the repository:
 
-    `git clone https://github.com/samuelmideksa/cozy.git`
+    ```bash
+git clone https://github.com/samuelmideksa/cozy.git
+```
 
 2. Install dependencies:
 
-    `pip install -r requirements.txt`
+    ````
+pip install -r requirements.txt
+```
 
 
 3. Run migrations:
 
-    `python manage.py migrate`
+    ```bash
+python manage.py migrate
+```
 
 
 4. Start the development server:
 
-    `python manage.py runserver`
+    ```bash
+python manage.py runserver
+```
 
 
 5. Access the application at http://localhost:8000 in your web browser.
