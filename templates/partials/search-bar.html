@@ -2,25 +2,14 @@
 
 <div class="container justify-content-center">
     <nav class="navbar sticky-top">
-        <form class="d-flex justify-content-center bg-white" method="POST" action="#">
-            {% csrf_token %}
-            <div class="row g-3">
-                <div class="col">
-                    {{ search_form.city|as_crispy_field }}
-                </div>
-                {#                        <div class="col">#}
-                {#                            {{ search_form.check_in|as_crispy_field }}#}
-                {#                        </div>#}
-                {#                        <div class="col">#}
-                {#                            {{ search_form.check_out|as_crispy_field }}#}
-                {#                        </div>#}
-                <div class="col">
-                    {{ search_form.guests|as_crispy_field }}
-                </div>
-            </div>
-            <button class="btn ms-5" type="submit">
-                <i class="bi bi-search" style="font-size: 1.5rem; color: #000000;"></i>
+        <form class="form-inline d-flex col-6" method="GET" action="{% url 'search' %}">
+            <input class="form-control form-control-sm mr-3 w-75 rounded-start-pill" type="text" placeholder="Search"
+                   aria-label="Search" name="q">
+            <span class="input-group-text red lighten-3 rounded-end-pill">
+            <button type="submit" class="border-0 bg-light">
+                <i class="ps-2 bi bi-search" aria-hidden="true"></i>
             </button>
+        </span>
         </form>
     </nav>
 </div>

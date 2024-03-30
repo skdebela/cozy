@@ -1,11 +1,15 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 
 from bookings.forms import BookingForm
+from bookings.models import Booking
 from destinations.models import Destination
 from destinations.forms import DestinationSearchForm, DestinationForm, PhotoFormSet
 from users.models import User, SavedDestination
+from reviews.models import Review
+from reviews.forms import ReviewForm
 
 
 def home_view(request):
@@ -41,18 +45,23 @@ def details(request, destination_id, destination_name):
     destination = Destination.objects.get(id=destination_id)
     search_form = DestinationSearchForm()
     booking_form = BookingForm()
+    reviews = Review.objects.filter(destination=destination)
+    # user_review = Review.objects.get(user=request.user, destination=destination)
+    review_form = ReviewForm()
 
     context = {
         'destination': destination,
         'search_form': search_form,
-        'booking_form': booking_form
+        'booking_form': booking_form,
+        'reviews': reviews,
+        # 'user_review': user_review,
+        'review_form': review_form,
     }
 
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
         if booking_form.is_valid():
             booking = booking_form.save(commit=False)
-            booking.guest = request.user
             booking.destination = destination
             booking.save()
 
@@ -67,20 +76,20 @@ def details(request, destination_id, destination_name):
 
 
 def search(request):
-    form = DestinationSearchForm(request.GET)
-    if form.is_valid():
-        city = form.cleaned_data['city']
-        check_in = form.cleaned_data['check_in']
-        check_out = form.cleaned_data['check_out']
-        guests = form.cleaned_data['guests']
-
-        # Perform search based on form data
-        # For example:
-        results = Destination.objects.filter(city=city)
-
-        return render(request, 'destinations/search.html', {'results': results})
+    query = request.GET.get('q')
+    if query:
+        search_results = Destination.objects.filter(
+            Q(name__icontains=query) |
+            Q(city__icontains=query) |
+            Q(street_address__icontains=query) |
+            Q(province_state_territory__icontains=query) |
+            Q(structure__name__icontains=query) |
+            Q(amenities__name__icontains=query) |
+            Q(standout_amenities__name__icontains=query)
+        ).distinct()
     else:
-        return render(request, 'destinations/search.html', {'results': None})
+        search_results = None
+    return render(request, 'destinations/search.html', {'search_results': search_results})
 
 
 @login_required

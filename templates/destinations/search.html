@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+    {% include 'partials/search-bar.html' %}
+
+    <div class="container-fluid mt-3">
+        <h4>Search results</h4>
+        {% if search_results %}
+            <p>Found {{ search_results|length }} result(s).</p>
+            <div class="row align-items-center g-2">
+                {% for destination in search_results %}
+                    <div class="col-md-3 my-3">
+                        <a href="{% url 'details' destination.id destination.name|slugify %}" class="card-link"
+                           style="text-decoration: none; color: black;">
+                            {% include 'partials/destination-card.html' %}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </div>
+{% endblock %}
