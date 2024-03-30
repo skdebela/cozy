@@ -1,8 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from users.forms import CustomUserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
@@ -12,7 +10,7 @@ from destinations.models import Destination
 
 
 class SignUpView(CreateView):
-    form_class = UserCreationForm
+    form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/signup.html'
 
