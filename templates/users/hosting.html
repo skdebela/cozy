@@ -4,6 +4,9 @@
 
 {% block content %}
     <div class="container-fluid">
+    {% if not currently_hosting and not pending_bookings and not pending_bookings and not upcoming_bookings and not past_bookings %}
+        <p>You have no bookings, go to <a href="{% url 'listings' %}">Listings</a> </p>
+    {% endif %}
         {% if currently_hosting %}
             <div class="row my-2">
                 <h2>Currently hosting</h2>
