@@ -11,16 +11,16 @@
         <div class="col-6">
             <h5 class="card-title">{{ booking.destination.city }}, {{ booking.destination.state }}</h5>
             <div class="card-text row">
-                <div class="col-10">
+                <div class="col-9">
                     <p>{{ booking.destination.name | truncatewords:5 }}</p>
                     <p>{{ booking.destination.beds }} beds</p>
                     <p>ETB {{ booking.destination.nightly_price }} per night</p>
                 </div>
                 {% if booking.status == 'Pending' %}
-                    <div class="col-2">
+                    <div class="col-3">
                         <form method="POST" action="{% url 'approve_booking' booking.id %}">
                             {% csrf_token %}
-                            <button type="submit">Approve</button>
+                            <button class="btn btn-success" type="submit">Approve</button>
                         </form>
                     </div>
                 {% endif %}
