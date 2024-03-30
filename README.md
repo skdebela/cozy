@@ -30,7 +30,7 @@ This project allows users to view, search, and book accommodations (destinations
 
 1. Clone the repository:
 
-`git clone https://github.com/samuelmideksa/cozy.git`
+    `git clone https://github.com/samuelmideksa/cozy.git`
 
 2. Install dependencies:
 
