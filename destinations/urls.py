@@ -9,4 +9,5 @@ urlpatterns = [
          name='update_destination'),
     path('hosting/destinations/<int:destination_id>/<slug:destination_name>/delete', destinations_views.delete,
          name='delete_destination'),
+    path('search', destinations_views.search, name='search'),
 ]

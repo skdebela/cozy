@@ -24,4 +24,4 @@ class DestinationSearchForm(forms.Form):
     city = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'City'}))
     # check_in = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     # check_out = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
-    guests = forms.ChoiceField(required=False, choices=[(i, i) for i in range(1, 16)] + [('15+', '15+')])
+    # guests = forms.IntegerField(min_value=1, label='Number of Guests')
