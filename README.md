@@ -36,7 +36,7 @@ This project allows users to view, search, and book accommodations (destinations
 
 2. Install dependencies:
 
-    ````bash
+    ```bash
     pip install -r requirements.txt
     ```
 
