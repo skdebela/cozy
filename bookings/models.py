@@ -15,7 +15,7 @@ class Booking(AbstractTimeStamp):
         ('Cancelled', 'Cancelled')
     ]
 
-    guest = models.ForeignKey(to='users.User', on_delete=models.CASCADE, related_name='bookings')
+    guest = models.ForeignKey(to='users.User', on_delete=models.CASCADE, related_name='bookings', null=True)
     destination = models.ForeignKey(to='destinations.Destination', on_delete=models.CASCADE, related_name='bookings')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending', verbose_name='Status')
     check_in = models.DateField()
@@ -26,7 +26,7 @@ class Booking(AbstractTimeStamp):
             raise ValidationError("Check-out date must be after the check-in date.")
 
     def __str__(self):
-        return f'{self.guest.username} books {self.destination.name}: {self.check_in} - {self.check_out}'
+        return f'{self.guest} books {self.destination.name}: {self.check_in} - {self.check_out}'
 
     @property
     def nights(self):
@@ -39,7 +39,7 @@ class Booking(AbstractTimeStamp):
         """
 
         sub_total = self.destination.nightly_price * self.nights
-        return sub_total
+        return sub_total.quantize(Decimal('0.00'))
 
     @property
     def total_price(self):
@@ -49,7 +49,7 @@ class Booking(AbstractTimeStamp):
 
         # Apply new listing promotion discount for first 3 bookings
         if self.destination.new_listing_promotion and new_listing:
-            total_price *= 0.8  # 20% discount
+            total_price *= Decimal(0.8) # 20% discount
 
         # Apply weekly discount
         if self.nights in range(7, 28) and self.destination.weekly_discount_percentage is not None:
@@ -63,7 +63,7 @@ class Booking(AbstractTimeStamp):
         if self.destination.cleaning_fee:
             total_price += self.destination.cleaning_fee
 
-        return total_price
+        return total_price.quantize(Decimal('0.00'))
 
     @property
     def earning_after_commission(self):
