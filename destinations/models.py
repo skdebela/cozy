@@ -1,5 +1,7 @@
 from decimal import Decimal
 from django.db import models
+from django.db.models import Avg
+
 from core.models import AbstractTimeStamp
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -67,6 +69,9 @@ class Photo(AbstractTimeStamp):
     caption = models.CharField(max_length=100, null=True, blank=True)
     file = models.ImageField(upload_to='')
     destination = models.ForeignKey(to='destinations.Destination', on_delete=models.CASCADE, related_name='photos')
+
+    def __str__(self):
+        return self.file.url
 
 
 class Destination(AbstractItems):
@@ -170,3 +175,11 @@ class Destination(AbstractItems):
         Returns the next four photos associated with the destination.
         """
         return self.photos.all()[1:5]
+
+    @property
+    def average_rating(self):
+        average = self.reviews.aggregate(Avg('rating'))['rating__avg']
+        if average is not None:
+            return round(average, 1)
+        else:
+            return None
